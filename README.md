@@ -1,5 +1,8 @@
 # Tokyo_A_Server
 
+## githubの使い方
+[github_usage.md](github_usage.md)
+
 ## 8/10-8/16の課題
 - [ ] クライアントUIの作成
 - [ ] firebaseを用いたユーザ認証のチュートリアル・実装
