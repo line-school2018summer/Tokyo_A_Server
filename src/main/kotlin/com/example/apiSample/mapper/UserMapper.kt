@@ -1,7 +1,6 @@
 package com.example.apiSample.mapper
 
 import com.example.apiSample.model.UserProfile
-import com.example.apiSample.model.UserList
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
@@ -11,6 +10,13 @@ import org.apache.ibatis.annotations.Select
 interface UserMapper {
     @Select(
         """
+        SELECT * FROM client_info.clients
+        """
+    )
+    fun getAllUsers(): ArrayList<UserProfile>
+
+    @Select(
+        """
         SELECT id, name, created_at, updated_at FROM client_info.clients WHERE id=#{userId}
         """
     )
@@ -18,11 +24,11 @@ interface UserMapper {
 
     @Select(
         """
-        SELECT id, name FROM client_info.clients WHERE name=#{name}
+        SELECT * FROM client_info.clients WHERE name=#{name}
         """
         // SELECT id, name FROM client_info.clients WHERE name LIKE CONCAT('%', #{searchStr}, '%')
     )
-    fun findBySearchStr(searchStr: String): ArrayList<UserList>
+    fun findBySearchStr(searchStr: String): ArrayList<UserProfile>
 
     @Insert(
         """

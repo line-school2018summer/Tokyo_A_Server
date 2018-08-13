@@ -18,4 +18,12 @@ class UserProfileService(private val userMapper: UserMapper) {
     fun deleteProfile(name: String): Unit {
         userMapper.deleteClient(name)
     }
+
+    fun getAllUsers(): ArrayList<UserProfile> {
+        return userMapper.getAllUsers()
+    }
+
+    fun findUsersList(searchStr: String): ArrayList<UserProfile> {
+        return userMapper.findBySearchStr(searchStr)
+    }
 }

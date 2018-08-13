@@ -1,9 +1,7 @@
 package com.example.apiSample.controller
 
 import com.example.apiSample.model.UserProfile
-import com.example.apiSample.model.UserList
 import com.example.apiSample.service.UserProfileService
-import com.example.apiSample.service.UserService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
@@ -17,17 +15,15 @@ data class PostSearchRequest(
 )
 
 @RestController
-class UserController(private val userProfileService: UserProfileService, private val userService: UserService) {
+class UserController(private val userProfileService: UserProfileService) {
     @GetMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun hello(): String{
-        return "{\"greeting\": \"Hello World!\"}"
-    }
+    fun getAllUsers(): ArrayList<UserProfile> = userProfileService.getAllUsers()
 
     @GetMapping(
-            value = ["/user/{id}/profile"],
+            value = ["/user/id/{id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getProfile(@PathVariable("id" ) userId: Long): UserProfile {
@@ -39,7 +35,7 @@ class UserController(private val userProfileService: UserProfileService, private
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getList(@RequestBody request: PostSearchRequest): Map<String, List<UserListResponse>> {
-        val userList: ArrayList<UserList> = userService.findUsersList(request.search_str)
+        val userList: ArrayList<UserProfile> = userProfileService.findUsersList(request.search_str)
         return mapOf("results" to userList.map {
             UserListResponse(
                     id = it.id,
@@ -48,9 +44,9 @@ class UserController(private val userProfileService: UserProfileService, private
         })
     }
 
-    // PUT に相当する機能
+    // PUTに相当する機能; clientの追加
     @PutMapping(
-            value = ["/name/{name}"],
+            value = ["/user/name/{name}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun putProfile(@PathVariable("name") name: String): Unit {
@@ -59,15 +55,15 @@ class UserController(private val userProfileService: UserProfileService, private
         // return userProfileService.getProfile(new_id)
     }
 
-    // DELETE に相当する機能
+    // DELETEに相当する機能; clientの削除
     @DeleteMapping(
-            value = ["/name/{name}"],
+            value = ["/user/name/{name}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun deleteProfile(@PathVariable("name") name: String): ArrayList<UserList> {
-        val deleteList: ArrayList<UserList> = userService.findUsersList(name)
+    fun deleteProfile(@PathVariable("name") name: String): ArrayList<UserProfile> {
+        val deleteList: ArrayList<UserProfile> = userProfileService.findUsersList(name)
         userProfileService.deleteProfile(name)
-        return deleteList
+        return deleteList // 削除したデータのリストを返す
     }
 
 
