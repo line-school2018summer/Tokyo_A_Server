@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.sql.Timestamp
 
 data class UserProfile(
-        var id: Long,
+        var id: String,
         var name: String,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp
@@ -20,8 +20,8 @@ data class UserList(
 */
 
 data class Talk(
-        var sender_id: Long,
-        var recever_id: Long,
+        var sender_id: String,
+        var recever_id: String,
         var text: String,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp

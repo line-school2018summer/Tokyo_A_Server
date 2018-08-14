@@ -6,24 +6,39 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserProfileService(private val userMapper: UserMapper) {
-    fun getProfile(userId: Long): UserProfile {
-        val profile = userMapper.findByUserId(userId)
-        return profile
-    }
-
-    fun putProfile(name: String): Unit {
-        userMapper.addClient(name)
-    }
-
-    fun deleteProfile(name: String): Unit {
-        userMapper.deleteClient(name)
-    }
-
+    // すべてのユーザの情報を取得する
     fun getAllUsers(): ArrayList<UserProfile> {
         return userMapper.getAllUsers()
     }
 
-    fun findUsersList(searchStr: String): ArrayList<UserProfile> {
+    // idでユーザを探す
+    fun getUserById(userId: String): UserProfile {
+        val profile = userMapper.findByUserId(userId)
+        return profile
+    }
+
+    // 名前でユーザを探す
+    fun getUsersByName(searchStr: String): ArrayList<UserProfile> {
         return userMapper.findBySearchStr(searchStr)
     }
+
+    fun getUsersByLikelyName(searchStr: String): ArrayList<UserProfile> {
+        return userMapper.findByLikelySearchStr(searchStr)
+    }
+
+    // ユーザの情報を追加する
+    fun addProfile(id: String, name: String): Unit {
+        userMapper.addProfile(id, name)
+    }
+
+    // ユーザの登録名を変更する
+    fun modifyProfile(id: String, name: String): Unit {
+        userMapper.modifyProfile(id, name)
+    }
+
+    // ユーザの情報を削除する
+    fun deleteProfile(id: String): Unit {
+        userMapper.deleteProfile(id)
+    }
+
 }

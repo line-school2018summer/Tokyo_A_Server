@@ -5,6 +5,7 @@ import com.example.apiSample.service.UserProfileService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
+/*
 data class UserListResponse(
         var id: Long,
         var name: String
@@ -13,9 +14,11 @@ data class UserListResponse(
 data class PostSearchRequest(
         val search_str: String
 )
+*/
 
 @RestController
 class UserController(private val userProfileService: UserProfileService) {
+    // GETに相当する機能; client情報の取得
     @GetMapping(
             value = ["/user"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
@@ -26,10 +29,27 @@ class UserController(private val userProfileService: UserProfileService) {
             value = ["/user/id/{id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getProfile(@PathVariable("id" ) userId: Long): UserProfile {
-        return userProfileService.getProfile(userId)
+    fun getUserById(@PathVariable("id" ) userId: String): UserProfile {
+        return userProfileService.getUserById(userId)
     }
 
+    @GetMapping(
+            value = ["/user/name/{name}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getUsersByName(@PathVariable("name" ) name: String): ArrayList<UserProfile> {
+        return userProfileService.getUsersByName(name)
+    }
+
+    @GetMapping(
+            value = ["/user/likelyname/{name}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getUsersByLikelyName(@PathVariable("name" ) name: String): ArrayList<UserProfile> {
+        return userProfileService.getUsersByLikelyName(name)
+    }
+
+    /*
     @PostMapping(
             value = ["/user/search"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
@@ -43,26 +63,34 @@ class UserController(private val userProfileService: UserProfileService) {
             )
         })
     }
+    */
 
-    // PUTに相当する機能; clientの追加
-    @PutMapping(
-            value = ["/user/name/{name}"],
+    // POSTに相当する機能; clientの追加
+    @PostMapping(
+            value = ["/user/create/{id}/{name}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun putProfile(@PathVariable("name") name: String): Unit {
-        // val new_id =
-                userProfileService.putProfile(name)
-        // return userProfileService.getProfile(new_id)
+    fun addProfile(@PathVariable("id") id: String, @PathVariable("name") name: String): Unit {
+        userProfileService.addProfile(id, name)
+    }
+
+    // PUTに相当する機能; clientの名前の変更
+    @PutMapping(
+            value = ["/user/modify/{id}/{name}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun modifyProfile(@PathVariable("id") id: String, @PathVariable("name") name: String): Unit {
+        userProfileService.modifyProfile(id, name)
     }
 
     // DELETEに相当する機能; clientの削除
     @DeleteMapping(
-            value = ["/user/name/{name}"],
+            value = ["/user/delete/{id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun deleteProfile(@PathVariable("name") name: String): ArrayList<UserProfile> {
-        val deleteList: ArrayList<UserProfile> = userProfileService.findUsersList(name)
-        userProfileService.deleteProfile(name)
+    fun deleteProfile(@PathVariable("id") id: String): UserProfile {
+        val deleteList: UserProfile = userProfileService.getUserById(id)
+        userProfileService.deleteProfile(id)
         return deleteList // 削除したデータのリストを返す
     }
 
