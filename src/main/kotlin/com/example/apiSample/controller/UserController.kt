@@ -5,7 +5,6 @@ import com.example.apiSample.model.UserProfile
 import com.example.apiSample.service.UserProfileService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import java.sql.Timestamp
 
 /*
 data class UserListResponse(
@@ -17,13 +16,7 @@ data class PostSearchRequest(
         val search_str: String
 )
 */
-data class TalkResponse(
-        var text: String,
-        var created_at: Timestamp
-)
-data class GetTalkRequest(
-        val requested_time: Timestamp
-)
+
 
 @RestController
 class UserController(private val userProfileService: UserProfileService) {

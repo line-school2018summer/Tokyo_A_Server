@@ -4,7 +4,6 @@ import com.example.apiSample.mapper.UserMapper
 import com.example.apiSample.model.Talk
 import com.example.apiSample.model.UserProfile
 import org.springframework.stereotype.Service
-import java.sql.Timestamp
 
 @Service
 class UserProfileService(private val userMapper: UserMapper) {
