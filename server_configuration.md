@@ -243,6 +243,28 @@ Enter password: [lineschool]
 > COMMIT;
 ```
 
+
+```
+> CREATE DATABASE IF NOT EXISTS talk_info DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+
+> USE talk_info;
+> create table talks (
+    talk_id bigint(13) NOT NULL,
+    sender_id varchar(255) COLLATE utf8mb4_bin NOT NULL,
+    send_room_num bigint(13) NOT NULL,
+    text varchar(255) COLLATE utf8mb4_bin NOT NULL,
+    num_read bigint(13) NOT NULL DEFAULT 0,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT '2018-01-01 00:00:00'
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+> ALTER TABLE talk_info.talks ADD PRIMARY KEY (talk_id);
+> ALTER TABLE talk_info.talks MODIFY talk_id bigint(13) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+
+> GRANT ALL PRIVILEGES ON talk_info.* TO dbuser@'localhost' IDENTIFIED BY 'lineschool'; // 重要
+> COMMIT;
+```
+
 ### メモ
 ```
 > CREATE DATABASE IF NOT EXISTS client_info DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;

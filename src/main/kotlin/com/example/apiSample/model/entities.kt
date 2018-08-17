@@ -20,9 +20,11 @@ data class UserList(
 */
 
 data class Talk(
+        var talk_id: Long,
         var sender_id: String,
-        var recever_id: String,
+        var send_room_num: Long,
         var text: String,
+        var num_read: Long,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp
 )

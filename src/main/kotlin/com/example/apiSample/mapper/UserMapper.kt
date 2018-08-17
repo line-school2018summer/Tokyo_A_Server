@@ -1,10 +1,12 @@
 package com.example.apiSample.mapper
 
+import com.example.apiSample.model.Talk
 import com.example.apiSample.model.UserProfile
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
+import java.sql.Timestamp
 
 @Mapper
 interface UserMapper {
@@ -63,4 +65,28 @@ interface UserMapper {
         """
     )
     fun deleteProfile(id: String): Unit
+
+
+    /* --- talk operation ---*/
+    @Insert(
+        """
+        INSERT INTO talk_info.talks (sender_id, send_room_num, text)
+        VALUES (#{sender_id}, #{send_room_num}, #{text})
+        """
+    )
+    fun addTalk(sender_id: String, send_room_num: Long, text: String): Unit
+
+    @Select(
+        """
+        SELECT * from talk_info.talks
+        """
+    )
+    fun getAllTalks(): ArrayList<Talk>
+
+    @Select(
+        """
+        SELECT * from talk_info.talks WHERE send_room_num=#{receive_room_num} AND talk_id>#{since_talk_id}
+        """
+    )
+    fun getTalk(receive_room_num: Long, since_talk_id: Long): ArrayList<Talk>
 }

@@ -1,9 +1,11 @@
 package com.example.apiSample.controller
 
+import com.example.apiSample.model.Talk
 import com.example.apiSample.model.UserProfile
 import com.example.apiSample.service.UserProfileService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.sql.Timestamp
 
 /*
 data class UserListResponse(
@@ -15,6 +17,13 @@ data class PostSearchRequest(
         val search_str: String
 )
 */
+data class TalkResponse(
+        var text: String,
+        var created_at: Timestamp
+)
+data class GetTalkRequest(
+        val requested_time: Timestamp
+)
 
 @RestController
 class UserController(private val userProfileService: UserProfileService) {
@@ -94,5 +103,28 @@ class UserController(private val userProfileService: UserProfileService) {
         return deleteList // 削除したデータのリストを返す
     }
 
+    /* --- talk operation --- */
+    @PostMapping(
+            value = ["/talk/create/{sender_id}/{send_room_num}/{text}"],
+            produces = [MediaType.APPLICATION_JSON_UTF8_VALUE]
+    )
+    fun addTalk(@PathVariable("sender_id") sender_id: String, @PathVariable("send_room_num") send_room_num: Long, @PathVariable("text") text: String): Unit {
+        userProfileService.addTalk(sender_id, send_room_num, text)
+    }
 
+    @GetMapping(
+            value = ["/talk"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getAllTalks(): ArrayList<Talk> {
+        return userProfileService.getAllTalks()
+    }
+
+    @GetMapping(
+            value = ["/talk/{receive_room_num}/{since_talk_id}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun getTalk(@PathVariable("receive_room_num") receive_room_num: Long, @PathVariable("since_talk_id") since_talk_id: Long): ArrayList<Talk> {
+        return userProfileService.getTalk(receive_room_num, since_talk_id)
+    }
 }
