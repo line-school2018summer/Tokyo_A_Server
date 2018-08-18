@@ -19,7 +19,7 @@ interface UserMapper {
     // idでユーザを探す（返り値は単体のはず）
     @Select(
         """
-        SELECT id, name, created_at, updated_at FROM client_info.clients WHERE id=#{userId}
+        SELECT * FROM client_info.clients WHERE id=#{userId}
         """
     )
     fun findByUserId(userId: String): UserProfile

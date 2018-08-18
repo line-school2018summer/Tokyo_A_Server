@@ -16,6 +16,7 @@ data class PostSearchRequest(
 )
 */
 
+
 @RestController
 class UserController(private val userProfileService: UserProfileService) {
     // GETに相当する機能; client情報の取得
@@ -93,6 +94,4 @@ class UserController(private val userProfileService: UserProfileService) {
         userProfileService.deleteProfile(id)
         return deleteList // 削除したデータのリストを返す
     }
-
-
 }
