@@ -6,8 +6,8 @@ import java.sql.Timestamp
 data class UserProfile(
         var id: String,
         var name: String,
-        @get:JsonProperty("created_at") var createdAt: Timestamp,
-        @get:JsonProperty("updated_at") var updatedAt: Timestamp
+        @get:JsonProperty("createdAt") var createdAt: Timestamp,
+        @get:JsonProperty("updatedAt") var updatedAt: Timestamp
 )
 
 /*
@@ -20,11 +20,11 @@ data class UserList(
 */
 
 data class Talk(
-        var talk_id: Long,
-        var sender_id: String,
-        var send_room_num: Long,
+        var talkId: Long,
+        var senderId: String,
+        var roomId: Long,
         var text: String,
-        var num_read: Long,
-        @get:JsonProperty("created_at") var createdAt: Timestamp,
-        @get:JsonProperty("updated_at") var updatedAt: Timestamp
+        var numRead: Long,
+        @get:JsonProperty("createdAt") var createdAt: Timestamp,
+        @get:JsonProperty("updatedAt") var updatedAt: Timestamp
 )

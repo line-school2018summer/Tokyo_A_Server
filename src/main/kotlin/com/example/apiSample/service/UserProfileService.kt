@@ -41,17 +41,4 @@ class UserProfileService(private val userMapper: UserMapper) {
     fun deleteProfile(id: String): Unit {
         userMapper.deleteProfile(id)
     }
-
-    /* --- talk operation --- */
-    fun addTalk(sender_id: String, send_room_num: Long, text: String): Unit {
-        userMapper.addTalk(sender_id, send_room_num, text)
-    }
-
-    fun getAllTalks(): ArrayList<Talk> {
-        return userMapper.getAllTalks()
-    }
-
-    fun getTalk(receive_room_num: Long, since_talk_id: Long): ArrayList<Talk> {
-        return userMapper.getTalk(receive_room_num, since_talk_id)
-    }
 }
