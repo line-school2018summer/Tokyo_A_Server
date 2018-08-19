@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select
 interface TalkMapper {
     @Insert(
         """
-        INSERT INTO talk_info.talks (sender_id, send_room_num, text)
+        INSERT INTO talk_info.talks (sender_id, room_id, text)
         VALUES (#{senderId}, #{roomId}, #{text})
         """
     )
@@ -25,7 +25,7 @@ interface TalkMapper {
 
     @Select(
         """
-        SELECT * from talk_info.talks WHERE send_room_num=#{roomId} AND talk_id>#{sinceTalkId}
+        SELECT * from talk_info.talks WHERE room_id=#{roomId} AND talk_id>#{sinceTalkId}
         """
     )
     fun getTalk(roomId: Long, sinceTalkId: Long): ArrayList<Talk>
