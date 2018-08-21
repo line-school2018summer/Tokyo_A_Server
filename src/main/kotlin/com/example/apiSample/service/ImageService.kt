@@ -1,38 +1,54 @@
 package com.example.apiSample.service
 
+import com.example.apiSample.controller.GetImageUrlResponse
 import com.example.apiSample.mapper.ImageMapper
-import com.example.apiSample.model.Image
 import org.springframework.stereotype.Service
-import java.sql.Blob
-import java.sql.Statement
+import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
+import java.io.FileOutputStream
+import java.io.OutputStream
+import javax.imageio.IIOImage
+import javax.imageio.ImageIO
+import javax.imageio.ImageWriteParam
+import javax.imageio.ImageWriter
+import javax.imageio.stream.ImageOutputStream
+import java.time.LocalDateTime;
 
 
 @Service
 class ImageService(private val imageMapper: ImageMapper) {
-    fun getAllImages(): ArrayList<Image> {
-        val sqlImageList = imageMapper.getAllImages()
-        return ArrayList(sqlImageList.map { image -> Image(image.id, image.fileName, image.rawData.getBytes(1, image.rawData.length().toInt()))})
+    fun getImageUrlById(id: String): GetImageUrlResponse {
+        return imageMapper.getImageUrlById(id)
     }
 
-    fun getImageById(id: Long): Image {
-        val sqlImage = imageMapper.findImageById(id)
-        val length = sqlImage.rawData.length().toInt()
-        return Image(sqlImage.id, sqlImage.fileName, sqlImage.rawData.getBytes(1, length))
+    fun addImage(id: String, rawData: ByteArray): Unit {
+        var basePath: String = "/home/ec2-user/images"
+        var fileName: String = LocalDateTime.now().toString() + ".jpg" // .jpg only
+        var pathToFile: String = basePath + "/" + fileName
+        var outputStream: OutputStream = FileOutputStream(pathToFile)
+        writeOutputStream(rawData, outputStream, "jpg") // 書き出し
+        imageMapper.addImage(id, fileName) // テーブルに記録
     }
 
-    fun getBlobById(id: Long): Image {
-        val length = imageMapper.findBlobById(id).length().toInt()
-        val byteArray: ByteArray = imageMapper.findBlobById(id).getBytes(1, length)
-        return Image(id, "hoge", byteArray)
-    }
+    fun writeOutputStream(byteArray: ByteArray, outputStream: OutputStream, fileFormat: String): Unit {
+        var imageInput: ByteArrayInputStream = ByteArrayInputStream(byteArray)
+        var buffer: BufferedImage = ImageIO.read(imageInput)
 
-    fun addImage(fileName: String, rawData: Blob): Unit {
-        imageMapper.addImage(fileName, rawData)
-    }
+        lateinit var writer: ImageWriter
+        var iter: Iterator<ImageWriter> = ImageIO.getImageWritersByFormatName(fileFormat)
+        if(iter.hasNext()) {
+            writer = iter.next()
+        }
 
-    /*
-    fun deleteImage(id: Long): Unit {
-        imageMapper.deleteImage(id)
+        var param: ImageWriteParam = writer.defaultWriteParam
+        if(param.canWriteCompressed() && fileFormat.equals("jpg")) {
+            param.compressionMode = ImageWriteParam.MODE_EXPLICIT
+            param.compressionQuality = 0.5f
+        }
+
+        var ios: ImageOutputStream = ImageIO.createImageOutputStream(outputStream)
+        writer.output = ios
+        var iioImage: IIOImage = IIOImage(buffer, null, null)
+        writer.write(null, iioImage, param)
     }
-    */
 }

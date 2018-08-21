@@ -1,55 +1,35 @@
 package com.example.apiSample.mapper
 
-import com.example.apiSample.model.Image
-import com.example.apiSample.model.SQLImage
+import com.example.apiSample.controller.GetImageUrlResponse
 import org.apache.ibatis.annotations.Delete
 import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Select
-import java.io.ByteArrayInputStream
-import java.sql.Blob
 
 @Mapper
 interface ImageMapper {
-    // すべてのユーザの情報を取得する
+    // idで画像を探す
     @Select(
         """
-        SELECT * FROM media_info.images
+        SELECT path_to_file FROM media_info.images WHERE uid=#{uid}
         """
     )
-    fun getAllImages(): ArrayList<SQLImage>
+    fun getImageUrlById(uid: String): GetImageUrlResponse
 
-    // idでユーザを探す（返り値は単体のはず）
-    @Select(
-        """
-        SELECT * FROM media_info.images WHERE id=#{id}
-        """
-    )
-    fun findImageById(id: Long): SQLImage
-
-    @Select(
-        """
-        SELECT raw_data FROM media_info.images WHERE id=#{id}
-        """
-    )
-    fun findBlobById(id: Long): Blob
-
-    // ユーザの情報を追加する
+    // 画像を追加する
     @Insert(
         """
-        INSERT INTO media_info.images (file_name, raw_data)
-        VALUES (#{fileName}, #{rawData});
+        INSERT INTO media_info.images (uid, path_to_file)
+        VALUES (#{uid}, #{pathToFile});
         """
     )
-    fun addImage(fileName: String, rawData: Blob): Unit
+    fun addImage(uid: String, pathToFile: String): Unit
 
-    /*
-    // ユーザの情報を削除する
+    // 画像を削除する
     @Delete(
         """
-        DELETE FROM client_info.clients WHERE id=#{id}
+        DELETE FROM client_info.clients WHERE uid=#{uid}
         """
     )
-    fun deleteImage(id: String): Unit
-    */
+    fun deleteImage(uid: String): Unit
 }
