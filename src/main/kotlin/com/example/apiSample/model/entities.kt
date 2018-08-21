@@ -28,3 +28,11 @@ data class Talk(
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp
 )
+
+data class Friend(
+        var userId: String,
+        var friendId: String,
+        var roomId: Long,
+        @get:JsonProperty("created_at") var createdAt: Timestamp,
+        @get:JsonProperty("updated_at") var updatedAt: Timestamp
+)
