@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class FriendController(private val friendService: FriendService) {
     @PostMapping(
-            value = ["/friend/add/{userId}/{friendId}/{roomId}"],
+            value = ["/friend/add/{userId}/{friendId}"],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE]
     )
-    fun addFriend(@PathVariable("userId") userId: String, @PathVariable("friendId") friendId: String, @PathVariable("roomId") roomId: Long): Unit {
-        friendService.addFriend(userId, friendId, roomId)
+    fun addFriend(@PathVariable("userId") userId: String, @PathVariable("friendId") friendId: String): Unit {
+        friendService.addFriend(userId, friendId)
     }
 
     @GetMapping(

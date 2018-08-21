@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class FriendService(private val friendMapper: FriendMapper) {
-    fun addFriend(userId: String, friendId: String, roomId: Long) {
-        friendMapper.addFriend(userId, friendId, roomId)
+    fun addFriend(userId: String, friendId: String) {
+        friendMapper.addFriend(userId, friendId)
     }
 
     fun getAllFriends(): ArrayList<Friend> {

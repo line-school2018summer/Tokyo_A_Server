@@ -10,11 +10,11 @@ import org.apache.ibatis.annotations.Select
 interface FriendMapper {
     @Insert(
             """
-        INSERT INTO friend_info.friends (user_id, friend_id, room_id)
-        VALUES (#{userId}, #{friendId}, #{roomId})
+        INSERT INTO friend_info.friends (user_id, friend_id)
+        VALUES (#{userId}, #{friendId}), (#{friendId}, #{userId})
         """
     )
-    fun addFriend(userId: String, friendId: String, roomId: Long)
+    fun addFriend(userId: String, friendId: String)
 
     @Select(
             """
