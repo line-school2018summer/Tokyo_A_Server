@@ -27,6 +27,13 @@ interface ImageMapper {
     )
     fun findImageById(id: Long): SQLImage
 
+    @Select(
+        """
+        SELECT raw_data FROM media_info.images WHERE id=#{id}
+        """
+    )
+    fun findBlobById(id: Long): Blob
+
     // ユーザの情報を追加する
     @Insert(
         """

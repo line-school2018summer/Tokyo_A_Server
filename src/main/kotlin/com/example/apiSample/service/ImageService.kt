@@ -4,6 +4,7 @@ import com.example.apiSample.mapper.ImageMapper
 import com.example.apiSample.model.Image
 import org.springframework.stereotype.Service
 import java.sql.Blob
+import java.sql.Statement
 
 
 @Service
@@ -17,6 +18,12 @@ class ImageService(private val imageMapper: ImageMapper) {
         val sqlImage = imageMapper.findImageById(id)
         val length = sqlImage.rawData.length().toInt()
         return Image(sqlImage.id, sqlImage.fileName, sqlImage.rawData.getBytes(1, length))
+    }
+
+    fun getBlobById(id: Long): Image {
+        val length = imageMapper.findBlobById(id).length().toInt()
+        val byteArray: ByteArray = imageMapper.findBlobById(id).getBytes(1, length)
+        return Image(id, "hoge", byteArray)
     }
 
     fun addImage(fileName: String, rawData: Blob): Unit {
