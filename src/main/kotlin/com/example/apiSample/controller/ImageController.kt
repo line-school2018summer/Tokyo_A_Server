@@ -5,7 +5,11 @@ import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 
 data class GetImageUrlResponse(
@@ -27,25 +31,26 @@ class ImageController(private val imageService: ImageService) {
     }
 
     @GetMapping(
-            value = ["/image/{id}"],
+            value = ["/image/id/{id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun getImageUrlById(@PathVariable("id") id: String): GetImageUrlResponse {
         return imageService.getImageUrlById(id)
     }
 
+    @ResponseBody
     @GetMapping(
-            value = "/image/{url}",
+            value = "/image/url/{url}",
             produces = [(MediaType.IMAGE_JPEG_VALUE)]
     )
-    fun getImageWithMediaType(@PathVariable("url") url: String): GetImageResponse {
-        val inputStream: InputStream = this::class.java.getResourceAsStream(url)
-        val outputStream = ByteArrayOutputStream()
-        inputStream.use { input ->
-            outputStream.use { output ->
-                input.copyTo(output)
-            }
+    fun getImageWithMediaType(@PathVariable("url") url: String): ByteArray {
+        val path: Path = Paths.get("/home/ec2-user/images/" + url)
+        lateinit var byteArray: ByteArray
+        try {
+            byteArray = Files.readAllBytes(path)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        return GetImageResponse(outputStream.toByteArray())
+        return byteArray
     }
 }
