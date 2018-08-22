@@ -19,3 +19,10 @@ data class Talk(
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp
 )
+
+data class ImageUrl(
+        var uid: String,
+        @get:JsonProperty("path_to_file") var pathToFile: String,
+        @get:JsonProperty("created_at") var createdAt: Timestamp,
+        @get:JsonProperty("updated_at") var updatedAt: Timestamp
+)

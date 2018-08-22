@@ -1,10 +1,7 @@
 package com.example.apiSample.mapper
 
 import com.example.apiSample.model.UserProfile
-import org.apache.ibatis.annotations.Delete
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface UserMapper {
@@ -40,7 +37,7 @@ interface UserMapper {
     fun findByLikelySearchStr(searchStr: String): ArrayList<UserProfile>
 
     // ユーザの登録名を変更する
-    @Insert(
+    @Update(
         """
         UPDATE client_info.clients SET name=#{name} WHERE id=#{id}
         """

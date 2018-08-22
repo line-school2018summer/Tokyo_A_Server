@@ -1,34 +1,47 @@
 package com.example.apiSample.mapper
 
-import com.example.apiSample.controller.GetImageUrlResponse
-import org.apache.ibatis.annotations.Delete
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.Select
+import com.example.apiSample.model.ImageUrl
+import org.apache.ibatis.annotations.*
 
 @Mapper
 interface ImageMapper {
-    // idで画像を探す
+    // すべての画像URLを取得する
     @Select(
         """
-        SELECT path_to_file FROM media_info.images WHERE uid=#{uid}
+        SELECT * FROM media_info.images
         """
     )
-    fun getImageUrlById(uid: String): GetImageUrlResponse
+    fun getAllImageUrl(): ArrayList<ImageUrl>
 
-    // 画像を追加する
+    // idで画像URLを探す
+    @Select(
+        """
+        SELECT * FROM media_info.images WHERE uid=#{uid}
+        """
+    )
+    fun getImageUrlById(uid: String): ImageUrl?
+
+    // 画像URLを追加する
     @Insert(
         """
         INSERT INTO media_info.images (uid, path_to_file)
-        VALUES (#{uid}, #{pathToFile});
+        VALUES (#{uid}, #{pathToFile})
         """
     )
     fun addImage(uid: String, pathToFile: String): Unit
 
-    // 画像を削除する
+    // 画像URLを変更する
+    @Update(
+            """
+        UPDATE media_info.images SET path_to_file=#{pathToFile} WHERE uid=#{uid}
+        """
+    )
+    fun modifyImage(uid: String, pathToFile: String): Unit
+
+    // 画像URLを削除する
     @Delete(
         """
-        DELETE FROM client_info.clients WHERE uid=#{uid}
+        DELETE FROM media_info.images WHERE uid=#{uid}
         """
     )
     fun deleteImage(uid: String): Unit

@@ -1,12 +1,13 @@
 package com.example.apiSample.service
 
-import com.example.apiSample.controller.GetImageUrlResponse
 import com.example.apiSample.mapper.ImageMapper
+import com.example.apiSample.model.ImageUrl
 import org.springframework.stereotype.Service
 import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import javax.imageio.IIOImage
 import javax.imageio.ImageIO
 import javax.imageio.ImageWriteParam
@@ -17,17 +18,43 @@ import java.time.LocalDateTime;
 
 @Service
 class ImageService(private val imageMapper: ImageMapper) {
-    fun getImageUrlById(id: String): GetImageUrlResponse {
+    var basePath: String = "/home/ec2-user/images"
+
+    fun getAllImageUrl(): ArrayList<ImageUrl> {
+        return imageMapper.getAllImageUrl()
+    }
+
+    fun getImageUrlById(id: String): ImageUrl? {
         return imageMapper.getImageUrlById(id)
     }
 
-    fun addImage(id: String, rawData: ByteArray): Unit {
-        var basePath: String = "/home/ec2-user/images"
-        var fileName: String = LocalDateTime.now().toString() + ".jpg" // .jpg only
-        var pathToFile: String = basePath + "/" + fileName
-        var outputStream: OutputStream = FileOutputStream(pathToFile)
-        writeOutputStream(rawData, outputStream, "jpg") // 書き出し
-        imageMapper.addImage(id, fileName) // テーブルに記録
+    fun getImageByUrl(url: String): ByteArray {
+        val path: Path = Paths.get("/home/ec2-user/images/" + url)
+        lateinit var byteArray: ByteArray
+        try {
+            byteArray = Files.readAllBytes(path)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return byteArray
+    }
+
+    fun addOrModifyImage(id: String, rawData: ByteArray): Unit {
+        if(getImageUrlById(id) != null) { // modify
+            deleteImageFile(id)
+            val fileName = addImageFile(rawData) // 画像の書き出し
+            println("***** MODIFY IMAGE: $fileName *****")
+            imageMapper.modifyImage(id, fileName) // テーブルを変更
+        } else { // add
+            val fileName = addImageFile(rawData) // 画像の書き出し
+            println("***** ADD FILE: $fileName *****")
+            imageMapper.addImage(id, fileName) // テーブルに記録
+        }
+    }
+
+    fun deleteImage(id: String): Unit {
+        deleteImageFile(id)
+        imageMapper.deleteImage(id)
     }
 
     fun writeOutputStream(byteArray: ByteArray, outputStream: OutputStream, fileFormat: String): Unit {
@@ -50,5 +77,27 @@ class ImageService(private val imageMapper: ImageMapper) {
         writer.output = ios
         var iioImage: IIOImage = IIOImage(buffer, null, null)
         writer.write(null, iioImage, param)
+    }
+
+    fun addImageFile(rawData: ByteArray): String {
+        var fileName: String = LocalDateTime.now().toString() + ".jpg" // .jpg only
+        var pathToFile: String = basePath + "/" + fileName
+        var outputStream: OutputStream = FileOutputStream(pathToFile)
+        writeOutputStream(rawData, outputStream, "jpg") // 書き出し
+        return fileName
+    }
+
+    fun deleteImageFile(id: String): Unit {
+        val url = getImageUrlById(id)?.pathToFile
+        val file = File(basePath + "/" + url)
+        if(file.exists()) {
+            if(file.delete()) {
+                println("***** DELETED FILE: $url *****")
+            } else {
+                println("***** FAILED TO DELETE FILE: $url *****")
+            }
+        } else {
+            println("***** FILE NOT FOUND: $url *****")
+        }
     }
 }
