@@ -32,7 +32,7 @@ interface ImageMapper {
 
     // 画像URLを変更する
     @Update(
-            """
+        """
         UPDATE media_info.images SET path_to_file=#{pathToFile} WHERE uid=#{uid}
         """
     )
