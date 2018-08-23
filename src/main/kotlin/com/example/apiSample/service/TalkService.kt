@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class TalkService(private val talkMapper: TalkMapper) {
-    fun addTalk(senderId: String, RoomId: Long, text: String): Unit {
-        talkMapper.addTalk(senderId, RoomId, text)
+    fun addTalk(senderId: String, roomId: Long, text: String): Unit {
+        talkMapper.addTalk(senderId, roomId, text)
     }
 
     fun getAllTalks(): ArrayList<Talk> {
