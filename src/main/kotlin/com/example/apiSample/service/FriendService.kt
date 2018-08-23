@@ -18,7 +18,7 @@ class FriendService(private val friendMapper: FriendMapper) {
        return friendMapper.getFriendsById(userId)
     }
 
-    fun deleteFriend(userId: String ,friendId: String) {
+    fun deleteFriend(userId: String, friendId: String) {
         friendMapper.deleteFriend(userId, friendId)
     }
 }

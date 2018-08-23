@@ -11,7 +11,7 @@ interface TalkMapper {
     @Insert(
         """
         INSERT INTO talk_info.talks (sender_id, room_id, text)
-        VALUES (#{senderId}, #{roomId}, #{text});
+        VALUES (#{senderId}, #{roomId}, #{text})
         """
     )
     fun addTalk(senderId: String, roomId: Long, text: String): Unit

@@ -36,7 +36,7 @@ class FriendController(private val friendService: FriendService) {
             value = ["/friend/delete/{userId}/{friendId}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun deleteFriend(@PathVariable("userId") userId: String ,@PathVariable("friendId") friendId: String) {
+    fun deleteFriend(@PathVariable("userId") userId: String, @PathVariable("friendId") friendId: String) {
         friendService.deleteFriend(userId, friendId)
     }
 }
