@@ -82,8 +82,9 @@ class ImageService(private val imageMapper: ImageMapper) {
     fun addImageFile(id: String, rawData: ByteArray): String {
         var fileName: String = id + "_" + LocalDateTime.now().toString() + ".jpg" // .jpg only
         var pathToFile: Path = Paths.get(basePath, fileName)
-        var outputStream: OutputStream = FileOutputStream(pathToFile.toFile())
+        var outputStream: OutputStream = Files.newOutputStream(pathToFile)
         writeOutputStream(rawData, outputStream, "jpg") // 書き出し
+        outputStream.close()
         return fileName
     }
 
