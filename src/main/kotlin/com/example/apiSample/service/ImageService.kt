@@ -29,7 +29,7 @@ class ImageService(private val imageMapper: ImageMapper) {
     }
 
     fun getImageByUrl(url: String): ByteArray {
-        val path: Path = Paths.get("/home/ec2-user/images/" + url)
+        val path: Path = Paths.get(basePath, url)
         lateinit var byteArray: ByteArray
         try {
             byteArray = Files.readAllBytes(path)
@@ -42,11 +42,11 @@ class ImageService(private val imageMapper: ImageMapper) {
     fun addOrModifyImage(id: String, rawData: ByteArray): Unit {
         if(getImageUrlById(id) != null) { // modify
             deleteImageFile(id)
-            val fileName = addImageFile(rawData) // 画像の書き出し
+            val fileName = addImageFile(id, rawData) // 画像の書き出し
             println("***** MODIFY IMAGE: $fileName *****")
             imageMapper.modifyImage(id, fileName) // テーブルを変更
         } else { // add
-            val fileName = addImageFile(rawData) // 画像の書き出し
+            val fileName = addImageFile(id, rawData) // 画像の書き出し
             println("***** ADD FILE: $fileName *****")
             imageMapper.addImage(id, fileName) // テーブルに記録
         }
@@ -70,7 +70,7 @@ class ImageService(private val imageMapper: ImageMapper) {
         var param: ImageWriteParam = writer.defaultWriteParam
         if(param.canWriteCompressed() && fileFormat.equals("jpg")) {
             param.compressionMode = ImageWriteParam.MODE_EXPLICIT
-            param.compressionQuality = 0.5f
+            param.compressionQuality = 1.0f
         }
 
         var ios: ImageOutputStream = ImageIO.createImageOutputStream(outputStream)
@@ -79,10 +79,10 @@ class ImageService(private val imageMapper: ImageMapper) {
         writer.write(null, iioImage, param)
     }
 
-    fun addImageFile(rawData: ByteArray): String {
-        var fileName: String = LocalDateTime.now().toString() + ".jpg" // .jpg only
-        var pathToFile: String = basePath + "/" + fileName
-        var outputStream: OutputStream = FileOutputStream(pathToFile)
+    fun addImageFile(id: String, rawData: ByteArray): String {
+        var fileName: String = id + "_" + LocalDateTime.now().toString() + ".jpg" // .jpg only
+        var pathToFile: Path = Paths.get(basePath, fileName)
+        var outputStream: OutputStream = FileOutputStream(pathToFile.toFile())
         writeOutputStream(rawData, outputStream, "jpg") // 書き出し
         return fileName
     }
