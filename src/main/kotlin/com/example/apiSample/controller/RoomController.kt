@@ -29,7 +29,7 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room/create/{room_name}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun addProfile(@PathVariable("room_name") roomName: String): Unit {
+    fun addRoom(@PathVariable("room_name") roomName: String): Unit {
         RoomService.addRoom(roomName)
     }
 
@@ -38,7 +38,7 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room/modify/{room_id}/{room_name}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun modifyProfile(@PathVariable("room_id") roomId: Long, @PathVariable("room_name") roomName: String): Unit {
+    fun modifyRoom(@PathVariable("room_id") roomId: Long, @PathVariable("room_name") roomName: String): Unit {
         RoomService.modifyRoom(roomId, roomName)
     }
 
@@ -47,7 +47,7 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room/delete/{room_id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun deleteProfile(@PathVariable("room_id") roomId: Long): Room {
+    fun deleteRoom(@PathVariable("room_id") roomId: Long): Room {
         val deleteList: Room = RoomService.getRoomById(roomId)
         RoomService.deleteRoom(roomId)
         return deleteList // 削除したデータのリストを返す
@@ -83,8 +83,19 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room_member/create/{room_id}/{uid}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun addProfile(@PathVariable("room_id") roomId: Long, @PathVariable("uid") uid: String): Unit {
+    fun addRoomMember(@PathVariable("room_id") roomId: Long, @PathVariable("uid") uid: String): Unit {
         RoomService.addRoomMember(roomId, uid)
+    }
+
+    // DELETEに相当する機能; RoomMemberの削除
+    @DeleteMapping(
+            value = ["/room_member/delete/{room_id}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun deleteAllRoomMembers(@PathVariable("room_id") roomId: Long): ArrayList<RoomMember> {
+        val deleteList: ArrayList<RoomMember> = RoomService.getRoomMembersByRoomId(roomId)
+        RoomService.deleteAllRoomMembers(roomId)
+        return deleteList // 削除したデータのリストを返す
     }
 
     // DELETEに相当する機能; RoomMemberの削除

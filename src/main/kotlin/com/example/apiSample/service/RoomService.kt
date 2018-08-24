@@ -60,6 +60,11 @@ class RoomService(private val RoomMapper: RoomMapper) {
     }
 
     // ルームの情報を削除する
+    fun deleteAllRoomMembers(roomId: Long): Unit {
+        RoomMapper.deleteAllRoomMembers(roomId)
+    }
+
+    // ルームの情報を削除する
     fun deleteRoomMember(roomId: Long, uid: String): Unit {
         RoomMapper.deleteRoomMember(roomId, uid)
     }
