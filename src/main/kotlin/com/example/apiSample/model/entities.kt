@@ -21,8 +21,8 @@ data class Talk(
 )
 
 data class Friend(
-        var userId: String,
-        var friendId: String,
+        @get:JsonProperty("user_id") var userId: String,
+        @get:JsonProperty("friend_id") var friendId: String,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp
 )
