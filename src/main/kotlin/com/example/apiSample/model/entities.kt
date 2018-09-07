@@ -28,7 +28,7 @@ data class Friend(
 )
 
 data class Room(
-        @get:JsonProperty("room_id") var roomId: Long,
+        @get:JsonProperty("room_id") var roomId: String,
         @get:JsonProperty("room_name") var roomName: String,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp

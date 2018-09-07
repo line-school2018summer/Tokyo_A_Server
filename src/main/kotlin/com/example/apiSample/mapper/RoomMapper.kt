@@ -24,7 +24,7 @@ interface RoomMapper {
         SELECT * FROM room_info.rooms WHERE room_id=#{roomId}
         """
     )
-    fun findByRoomId(roomId: Long): Room
+    fun findByRoomId(roomId: String): Room
 
     // ルームの登録名を変更する
     @Insert(
@@ -32,16 +32,16 @@ interface RoomMapper {
         UPDATE room_info.rooms SET room_name=#{roomName} WHERE room_id=#{roomId}
         """
     )
-    fun modifyRoom(roomId: Long, roomName: String): Unit
+    fun modifyRoom(roomId: String, roomName: String): Unit
 
     // ルームの情報を追加する
     @Insert(
         """
-        INSERT INTO room_info.rooms (room_name)
-        VALUES (#{roomName})
+        INSERT INTO room_info.rooms (room_id, room_name)
+        VALUES (#{roomId}, #{roomName});
         """
     )
-    fun addRoom(roomName: String): Unit
+    fun addRoom(roomId: String, roomName: String): Unit
 
     // ユーザの情報を削除する
     @Delete(
@@ -49,7 +49,7 @@ interface RoomMapper {
         DELETE FROM room_info.rooms WHERE room_id=#{roomId}
         """
     )
-    fun deleteRoom(roomId: Long): Unit
+    fun deleteRoom(roomId: String): Unit
 
 
     /* ROOM MEMBERS */
@@ -67,7 +67,7 @@ interface RoomMapper {
         SELECT * FROM room_info.room_members WHERE room_id=#{roomId}
         """
     )
-    fun findMembersByRoomId(roomId: Long): ArrayList<RoomMember>
+    fun findMembersByRoomId(roomId: String): ArrayList<RoomMember>
 
     // ユーザidでルームを探す
     @Select(
@@ -83,7 +83,7 @@ interface RoomMapper {
         SELECT * FROM room_info.room_members WHERE room_id=#{roomId} AND uid=#{uid}
         """
     )
-    fun findRoomMembersByRoomIdAndUserId(roomId: Long, uid: String): ArrayList<RoomMember>
+    fun findRoomMembersByRoomIdAndUserId(roomId: String, uid: String): ArrayList<RoomMember>
 
     // ルームメンバーの情報を追加する
     @Insert(
@@ -92,7 +92,7 @@ interface RoomMapper {
         VALUES (#{roomId}, #{uid})
         """
     )
-    fun addRoomMember(roomId: Long, uid: String): Unit
+    fun addRoomMember(roomId: String, uid: String): Unit
 
     // あるルームのルームメンバーの情報をすべて削除する
     @Delete(
@@ -100,7 +100,7 @@ interface RoomMapper {
         DELETE FROM room_info.room_members WHERE room_id=#{roomId}
         """
     )
-    fun deleteAllRoomMembers(roomId: Long): Unit
+    fun deleteAllRoomMembers(roomId: String): Unit
 
     // ルームメンバーの情報を削除する
     @Delete(
@@ -108,5 +108,5 @@ interface RoomMapper {
         DELETE FROM room_info.room_members WHERE room_id=#{roomId} AND uid=#{uid}
         """
     )
-    fun deleteRoomMember(roomId: Long, uid: String): Unit
+    fun deleteRoomMember(roomId: String, uid: String): Unit
 }

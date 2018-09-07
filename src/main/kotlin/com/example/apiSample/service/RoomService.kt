@@ -14,22 +14,22 @@ class RoomService(private val RoomMapper: RoomMapper) {
     }
 
     // idでルームを探す
-    fun getRoomById(roomId: Long): Room {
+    fun getRoomById(roomId: String): Room {
         return RoomMapper.findByRoomId(roomId)
     }
 
     // ルームの情報を追加する
-    fun addRoom(roomName: String): Unit {
-        RoomMapper.addRoom(roomName)
+    fun addRoom(roomId: String, roomName: String): Unit {
+        RoomMapper.addRoom(roomId, roomName)
     }
 
     // ルームの登録名を変更する
-    fun modifyRoom(roomId: Long, roomName: String): Unit {
+    fun modifyRoom(roomId: String, roomName: String): Unit {
         RoomMapper.modifyRoom(roomId, roomName)
     }
 
     // ルームの情報を削除する
-    fun deleteRoom(roomId: Long): Unit {
+    fun deleteRoom(roomId: String): Unit {
         RoomMapper.deleteRoom(roomId)
     }
 
@@ -40,12 +40,12 @@ class RoomService(private val RoomMapper: RoomMapper) {
     }
 
     // idでルームを探す
-    fun getRoomMembersByRoomId(roomId: Long): ArrayList<RoomMember> {
+    fun getRoomMembersByRoomId(roomId: String): ArrayList<RoomMember> {
         return RoomMapper.findMembersByRoomId(roomId)
     }
 
     // idでルームを探す
-    fun getRoomMembersByRoomIdAndUserId(roomId: Long, uid: String): ArrayList<RoomMember> {
+    fun getRoomMembersByRoomIdAndUserId(roomId: String, uid: String): ArrayList<RoomMember> {
         return RoomMapper.findRoomMembersByRoomIdAndUserId(roomId, uid)
     }
 
@@ -55,17 +55,17 @@ class RoomService(private val RoomMapper: RoomMapper) {
     }
 
     // ルームの情報を追加する
-    fun addRoomMember(roomId: Long, uid: String): Unit {
+    fun addRoomMember(roomId: String, uid: String): Unit {
         RoomMapper.addRoomMember(roomId, uid)
     }
 
     // ルームの情報を削除する
-    fun deleteAllRoomMembers(roomId: Long): Unit {
+    fun deleteAllRoomMembers(roomId: String): Unit {
         RoomMapper.deleteAllRoomMembers(roomId)
     }
 
     // ルームの情報を削除する
-    fun deleteRoomMember(roomId: Long, uid: String): Unit {
+    fun deleteRoomMember(roomId: String, uid: String): Unit {
         RoomMapper.deleteRoomMember(roomId, uid)
     }
 }
