@@ -30,7 +30,7 @@ class RoomController(private val RoomService: RoomService) {
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
     fun addRoom(@PathVariable("room_id") roomId: String, @PathVariable("room_name") roomName: String): Unit {
-        RoomService.addRoom(roomName)
+        RoomService.addRoom(roomId, roomName)
     }
 
     // PUTに相当する機能; roomの名前の変更
