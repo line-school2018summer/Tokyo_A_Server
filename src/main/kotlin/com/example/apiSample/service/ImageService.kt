@@ -94,15 +94,17 @@ class ImageService(private val imageMapper: ImageMapper) {
 
     fun deleteImageFile(id: String): Unit {
         val url = getImageUrlById(id)?.pathToFile
-        val file = File(basePath + "/" + url)
-        if(file.exists()) {
-            if(file.delete()) {
-                println("***** DELETED FILE: $url *****")
+        if (!url.equals("default.jpg")) { // デフォルト画像の場合は，画像データは残しておく
+            val file = File(basePath + "/" + url)
+            if (file.exists()) {
+                if (file.delete()) {
+                    println("***** DELETED FILE: $url *****")
+                } else {
+                    println("***** FAILED TO DELETE FILE: $url *****")
+                }
             } else {
-                println("***** FAILED TO DELETE FILE: $url *****")
+                println("***** FILE NOT FOUND: $url *****")
             }
-        } else {
-            println("***** FILE NOT FOUND: $url *****")
         }
     }
 }
