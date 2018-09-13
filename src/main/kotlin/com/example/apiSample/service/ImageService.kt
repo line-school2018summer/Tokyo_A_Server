@@ -52,6 +52,10 @@ class ImageService(private val imageMapper: ImageMapper) {
         }
     }
 
+    fun addDefaultImage(id: String): Unit {
+        imageMapper.addImage(id, "default.jpg") // テーブルに記録
+    }
+
     fun deleteImage(id: String): Unit {
         deleteImageFile(id)
         imageMapper.deleteImage(id)

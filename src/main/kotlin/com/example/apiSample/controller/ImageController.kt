@@ -49,6 +49,14 @@ class ImageController(private val imageService: ImageService) {
         imageService.addOrModifyImage(id, rawData)
     }
 
+    @PostMapping(
+            value = ["/image/create/default/{id}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun addDefaultImage(@PathVariable("id") id: String): Unit {
+        imageService.addDefaultImage(id)
+    }
+
     @PutMapping(
             value = ["/image/modify/{id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
