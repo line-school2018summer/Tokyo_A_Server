@@ -20,7 +20,7 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room/room_id/{room_id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getRoomById(@PathVariable("room_id" ) roomId: String): Room {
+    fun getRoomById(@PathVariable("room_id" ) roomId: String): Room? {
         return RoomService.getRoomById(roomId)
     }
 
@@ -47,8 +47,8 @@ class RoomController(private val RoomService: RoomService) {
             value = ["/room/delete/{room_id}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun deleteRoom(@PathVariable("room_id") roomId: String): Room {
-        val deleteList: Room = RoomService.getRoomById(roomId)
+    fun deleteRoom(@PathVariable("room_id") roomId: String): Room? {
+        val deleteList: Room? = RoomService.getRoomById(roomId)
         RoomService.deleteRoom(roomId)
         return deleteList // 削除したデータのリストを返す
     }

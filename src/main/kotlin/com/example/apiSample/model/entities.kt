@@ -35,7 +35,7 @@ data class Room(
 )
 
 data class RoomMember(
-        @get:JsonProperty("room_id") var roomId: Long,
+        @get:JsonProperty("room_id") var roomId: String,
         @get:JsonProperty("uid") var uid: String,
         @get:JsonProperty("created_at") var createdAt: Timestamp,
         @get:JsonProperty("updated_at") var updatedAt: Timestamp

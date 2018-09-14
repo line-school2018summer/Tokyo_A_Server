@@ -14,13 +14,15 @@ class RoomService(private val RoomMapper: RoomMapper) {
     }
 
     // idでルームを探す
-    fun getRoomById(roomId: String): Room {
+    fun getRoomById(roomId: String): Room? {
         return RoomMapper.findByRoomId(roomId)
     }
 
     // ルームの情報を追加する
     fun addRoom(roomId: String, roomName: String): Unit {
-        RoomMapper.addRoom(roomId, roomName)
+        if(getRoomById(roomId) == null) {
+            RoomMapper.addRoom(roomId, roomName)
+        }
     }
 
     // ルームの登録名を変更する
@@ -56,7 +58,9 @@ class RoomService(private val RoomMapper: RoomMapper) {
 
     // ルームの情報を追加する
     fun addRoomMember(roomId: String, uid: String): Unit {
-        RoomMapper.addRoomMember(roomId, uid)
+        if(getRoomMembersByRoomIdAndUserId(roomId, uid).size == 0) {
+            RoomMapper.addRoomMember(roomId, uid)
+        }
     }
 
     // ルームの情報を削除する
