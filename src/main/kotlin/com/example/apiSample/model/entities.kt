@@ -13,7 +13,7 @@ data class UserProfile(
 data class Talk(
         @get:JsonProperty("talk_id") var talkId: Long,
         @get:JsonProperty("sender_id") var senderId: String,
-        @get:JsonProperty("room_id") var roomId: Long,
+        @get:JsonProperty("room_id") var roomId: String,
         var text: String,
         @get:JsonProperty("num_read") var numRead: Long,
         @get:JsonProperty("created_at") var createdAt: Timestamp,

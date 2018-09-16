@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TalkService(private val talkMapper: TalkMapper) {
-    fun addTalk(senderId: String, roomId: Long, text: String): Unit {
+    fun addTalk(senderId: String, roomId: String, text: String): Unit {
         talkMapper.addTalk(senderId, roomId, text)
     }
 
@@ -14,7 +14,7 @@ class TalkService(private val talkMapper: TalkMapper) {
         return talkMapper.getAllTalks()
     }
 
-    fun getTalk(roomId: Long, sinceTalkId: Long): ArrayList<Talk> {
+    fun getTalk(roomId: String, sinceTalkId: Long): ArrayList<Talk> {
         return talkMapper.getTalk(roomId, sinceTalkId)
     }
 

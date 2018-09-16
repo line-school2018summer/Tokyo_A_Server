@@ -14,7 +14,7 @@ interface TalkMapper {
         VALUES (#{senderId}, #{roomId}, #{text})
         """
     )
-    fun addTalk(senderId: String, roomId: Long, text: String): Unit
+    fun addTalk(senderId: String, roomId: String, text: String): Unit
 
     @Select(
         """
@@ -28,7 +28,7 @@ interface TalkMapper {
         SELECT * from talk_info.talks WHERE room_id=#{roomId} AND talk_id>#{sinceTalkId}
         """
     )
-    fun getTalk(roomId: Long, sinceTalkId: Long): ArrayList<Talk>
+    fun getTalk(roomId: String, sinceTalkId: Long): ArrayList<Talk>
 
     @Select(
         """
