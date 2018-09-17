@@ -13,7 +13,7 @@ class TalkController(private val talkService: TalkService) {
             value = ["/talk/create/{senderId}/{roomId}/{text}"],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE]
     )
-    fun addTalk(@PathVariable("senderId") senderId: String, @PathVariable("roomId") roomId: Long, @PathVariable("text") text: String): Unit {
+    fun addTalk(@PathVariable("senderId") senderId: String, @PathVariable("roomId") roomId: String, @PathVariable("text") text: String): Unit {
         talkService.addTalk(senderId, roomId, text)
     }
 
@@ -29,7 +29,7 @@ class TalkController(private val talkService: TalkService) {
             value = ["/talk/{roomId}/{sinceTalkId}"],
             produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
     )
-    fun getTalk(@PathVariable("roomId") roomId: Long, @PathVariable("sinceTalkId") sinceTalkId: Long): ArrayList<Talk> {
+    fun getTalk(@PathVariable("roomId") roomId: String, @PathVariable("sinceTalkId") sinceTalkId: Long): ArrayList<Talk> {
         val timestamp = Timestamp(System.currentTimeMillis())
         while(Timestamp(System.currentTimeMillis()).time - timestamp.time < 5000) {
             if(!talkService.getTalk(roomId, sinceTalkId).isEmpty()){
