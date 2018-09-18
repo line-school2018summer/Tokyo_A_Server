@@ -21,7 +21,14 @@ class RoomService(private val RoomMapper: RoomMapper) {
     // ルームの情報を追加する
     fun addRoom(roomId: String, roomName: String): Unit {
         if(getRoomById(roomId) == null) {
-            RoomMapper.addRoom(roomId, roomName)
+            RoomMapper.addRoom(roomId, roomName, false)
+        }
+    }
+
+    // ルームの情報を追加する
+    fun addRoomAsGroup(roomId: String, roomName: String): Unit {
+        if(getRoomById(roomId) == null) {
+            RoomMapper.addRoom(roomId, roomName, true)
         }
     }
 

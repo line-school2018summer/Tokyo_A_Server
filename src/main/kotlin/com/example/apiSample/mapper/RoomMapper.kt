@@ -37,11 +37,11 @@ interface RoomMapper {
     // ルームの情報を追加する
     @Insert(
         """
-        INSERT INTO room_info.rooms (room_id, room_name)
-        VALUES (#{roomId}, #{roomName});
+        INSERT INTO room_info.rooms (room_id, room_name, is_group)
+        VALUES (#{roomId}, #{roomName}, #{isGroup});
         """
     )
-    fun addRoom(roomId: String, roomName: String): Unit
+    fun addRoom(roomId: String, roomName: String, isGroup: Boolean): Unit
 
     // ユーザの情報を削除する
     @Delete(
