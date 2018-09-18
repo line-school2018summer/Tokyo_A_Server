@@ -33,6 +33,14 @@ class RoomController(private val RoomService: RoomService) {
         RoomService.addRoom(roomId, roomName)
     }
 
+    @PostMapping(
+            value = ["/room/create_group/{room_id}/{room_name}"],
+            produces = [(MediaType.APPLICATION_JSON_UTF8_VALUE)]
+    )
+    fun addRoomAsGroup(@PathVariable("room_id") roomId: String, @PathVariable("room_name") roomName: String): Unit {
+        RoomService.addRoomAsGroup(roomId, roomName)
+    }
+
     // PUTに相当する機能; roomの名前の変更
     @PutMapping(
             value = ["/room/modify/{room_id}/{room_name}"],
