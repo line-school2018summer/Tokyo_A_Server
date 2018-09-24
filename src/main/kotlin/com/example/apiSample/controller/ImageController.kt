@@ -27,7 +27,7 @@ class ImageController(private val imageService: ImageService) {
         if(imageUrl != null) {
             return imageUrl
         } else {
-            return ImageUrl("id", "url", Timestamp(0), Timestamp(0))
+            return ImageUrl("$id", "default.jpg", Timestamp(0), Timestamp(0))
         }
     }
 

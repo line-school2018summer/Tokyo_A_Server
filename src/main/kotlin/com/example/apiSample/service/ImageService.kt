@@ -35,6 +35,7 @@ class ImageService(private val imageMapper: ImageMapper) {
             byteArray = Files.readAllBytes(path)
         } catch (e: IOException) {
             e.printStackTrace()
+            byteArray = Files.readAllBytes(Paths.get(basePath, "default.jpg"))
         }
         return byteArray
     }
